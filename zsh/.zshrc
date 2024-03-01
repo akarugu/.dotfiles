@@ -70,7 +70,7 @@ ZSH_THEME="awesomepanda"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git tmux golang)
+plugins=(git tmux golang zsh-autosuggestions zsh-syntax-highlighting)
 
 #zsh tmux auto start
 ZSH_TMUX_AUTOSTART=true

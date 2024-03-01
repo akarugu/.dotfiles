@@ -36,9 +36,18 @@ done
 for dir in "${stows[@]}"; do
     stow --adopt "$dir"
 done
+
 #reset context to init if already exists
 git --reset hard
 
 #start borders for fancy look - works with aerospace
 brew services start borders
 borders active_color=0xff13ed37 inactive_color=0xff494d64 width=8.0 &
+
+#clone zsh syntax highlighting
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+#clone zsh auto suggestions
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+
+
