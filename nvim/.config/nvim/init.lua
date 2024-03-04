@@ -2,13 +2,15 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-vim.opt.hlsearch = false
-vim.opt.incsearch = true
+vim.o.hlsearch = false
+vim.o.incsearch = true
 
-vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
-vim.opt.undofile = true
+vim.o.swapfile = false
+vim.o.backup = false
+vim.o.undodir = os.getenv("HOME") .. "/.vim/undodir"
+vim.o.undofile = true
+
+vim.o.scrolloff = 8
 
 -- Plugin manager
 -- `:help lazy.nvim.txt` for more info
@@ -64,6 +66,9 @@ require("lazy").setup({
 	{
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 	},
+
+	-- Tmux and Neovim Shines
+	{ "vim-test/vim-test" },
 
 	-- Formatter and Linter Configurations
 	{
@@ -259,6 +264,9 @@ require("lazy").setup({
 		end,
 	},
 
+	-- Tmux and Neovim Shines
+	{ "preservim/vimux" },
+
 	-- Undo tree
 	{ "mbbill/undotree" },
 }, {})
@@ -326,6 +334,24 @@ vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous dia
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+
+-- Test keymaps
+vim.keymap.set("n", "<leader>Tn", ":TestNearest<CR>", { desc = "[T]est [N]earest" })
+vim.keymap.set("n", "<leader>Tf", ":TestFile<CR>", { desc = "[T]est [F]ile" })
+vim.keymap.set("n", "<leader>Ts", ":TestSuite<CR>", { desc = "[T]est [S]uite" })
+vim.keymap.set("n", "<leader>Tl", ":TestLast<CR>", { desc = "[T]est [L]ast" })
+vim.keymap.set("n", "<leader>Tv", ":TestVisit<CR>", { desc = "[T]est [V]isit" })
+
+-- Extra toggle keymaps
+vim.keymap.set("n", "<leader>tt", ":NvimTreeToggle<CR>", { desc = "[T]oggle [T]ree" })
+vim.keymap.set("n", "<leader>tv", ":VimuxTogglePane<CR>", { desc = "[T]oggle [V]imux" })
+vim.keymap.set("n", "<leader>tu", ":UndotreeToggle<CR>", { desc = "[T]oggle [U]ndotree" })
+
+-- Extra LSP keymaps
+vim.keymap.set("n", "<leader>lr", ":LspRestart<CR>", { desc = "LSP: [R]estart" })
+
+-- Make vimux global strategy
+vim.api.nvim_set_var("test#strategy", "vimux")
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -517,18 +543,14 @@ local on_attach = function(_, bufnr)
 		vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
 	end
 
-	-- Tree Mapping
-	nmap("<leader>tt", function()
-		require("nvim-tree.api").tree.toggle()
-	end, "[T]oggle [T]ree")
-
-	nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
+	-- Buffer LSP Mapping
+	nmap("<leader>ln", vim.lsp.buf.rename, "Re[n]ame")
 	nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 
 	nmap("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
 	nmap("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 	nmap("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-	nmap("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
+	nmap("<leader>ld", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
 	nmap("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
 	nmap("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
 
@@ -560,6 +582,9 @@ require("which-key").register({
 	["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
 	["<leader>t"] = { name = "[T]oggle", _ = "which_key_ignore" },
 	["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
+	["<leader>l"] = { name = "[L]SP", _ = "which_key_ignore" },
+	["<leader>tt"] = { name = "[T]oggle [T]ree", _ = "which_key_ignore" },
+	["<leader>T"] = { name = "[T]est", _ = "which_key_ignore" },
 })
 -- register which-key VISUAL mode
 -- required for visual <leader>hs (hunk stage) to work
@@ -567,11 +592,6 @@ require("which-key").register({
 	["<leader>"] = { name = "VISUAL <leader>" },
 	["<leader>h"] = { "Git [H]unk" },
 }, { mode = "v" })
-
--- register tree toggle
-require("which-key").register({
-	["<leader>tt"] = { "[T]oggle [T]ree" },
-})
 
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
@@ -660,6 +680,7 @@ mason_tools.setup({
 	},
 })
 
+-- Set the formatter and linter configurations
 require("conform").setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
@@ -723,6 +744,3 @@ cmp.setup({
 		{ name = "path" },
 	},
 })
-
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
