@@ -66,8 +66,7 @@ h = 'resize width -50'
 j = 'resize height +50'
 k = 'resize height -50'
 l = 'resize width +50'
-enter = 'mode main'
-esc = 'mode esc'
+alt-esc = 'mode main'
 
 [workspace-to-monitor-force-assignment]
 1 = ['main', 'secondary']

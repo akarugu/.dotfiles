@@ -251,7 +251,7 @@
 				<real>0.0806884765625</real>
 			</dict>
 			<key>Background Image Location</key>
-			<string>/Users/ugur/.dotfiles/wallpaper/ghibli-all.jpeg</string>  <!-- may need update -->
+			<string>/Users/ugur/.dotfiles/wallpaper/street.jpg</string>  <!-- may need update -->
 			<key>Background Image Mode</key>
 			<integer>2</integer>
 			<key>Badge Color</key>
@@ -268,7 +268,7 @@
 				<real>1</real>
 			</dict>
 			<key>Blend</key>
-			<real>0.18072010869565208</real>
+			<real>0.3</real>
 			<key>Blinking Cursor</key>
 			<true/>
 			<key>Blur</key>

@@ -600,6 +600,8 @@ require("mason-lspconfig").setup()
 require("mason-nvim-dap").setup()
 
 local servers = {
+	bashls = {},
+
 	--  go related
 	gopls = {
 		gopls = {
@@ -615,7 +617,8 @@ local servers = {
 	},
 
 	dockerls = {},
-	bashls = {},
+
+	yamlls = {},
 
 	lua_ls = {
 		Lua = {
@@ -675,6 +678,9 @@ mason_tools.setup({
 		"gofumpt",
 		"gomodifytags",
 		"golines",
+
+		"yamlfmt",
+		"yamllint",
 
 		"stylua",
 	},

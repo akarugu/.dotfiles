@@ -18,7 +18,6 @@ apps=(
 	go
 	ngrok/ngrok/ngrok
 	borders
-	docker
 	kubernetes-cli
 	kubectx
 	k3d
@@ -28,12 +27,15 @@ casks=(
 	nikitabobko/tap/aerospace #wm
 	iterm2
 	notion
-	obsidian
 	slack
 	postman
 	spotify
 	discord
 	figma
+	docker
+	runelite
+	calibre
+	ticktick
 )
 
 fonts=(
