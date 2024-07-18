@@ -80,6 +80,8 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
+export export KUBE_EDITOR=nvim
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment

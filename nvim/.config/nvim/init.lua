@@ -11,6 +11,9 @@ vim.o.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.o.undofile = true
 
 vim.o.scrolloff = 8
+vim.o.cmdheight = 0
+
+vim.o.colorcolumn = "80"
 
 -- Plugin manager
 -- `:help lazy.nvim.txt` for more info
@@ -29,6 +32,14 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Configure plugins
 require("lazy").setup({
+	-- Startup screen, lightweight and beautiful
+	{
+		"eoh-bse/minintro.nvim",
+		opts = { color = "#698DDA" },
+		config = true,
+		lazy = false,
+	},
+
 	-- Git related plugins
 	"tpope/vim-fugitive",
 	"tpope/vim-rhubarb",
@@ -103,8 +114,27 @@ require("lazy").setup({
 		},
 	},
 
-	-- Useful plugin to show you pending keybinds.
-	{ "folke/which-key.nvim", opts = {} },
+	{ -- Useful plugin to show you pending keybinds.
+		"folke/which-key.nvim",
+		event = "VimEnter", -- Sets the loading event to 'VimEnter'
+		config = function() -- This is the function that runs, AFTER loading
+			require("which-key").setup()
+
+			-- Document existing key chains
+			require("which-key").add({
+				{ "<leader>c", group = "[C]ode", icon = "" },
+				{ "<leader>d", group = "[D]ocument" },
+				{ "<leader>r", group = "[R]ename" },
+				{ "<leader>s", group = "[S]earch" },
+				{ "<leader>w", group = "[W]orkspace" },
+				{ "<leader>t", group = "[T]oggle" },
+				{ "<leader>l", group = "[L]SP" },
+				{ "<leader>T", group = "[T]est" },
+				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
+				{ "<leader>sG", group = "Search [G]it Files" },
+			})
+		end,
+	},
 	{
 		-- Adds git related signs to the gutter, as well as utilities for managing changes
 		"lewis6991/gitsigns.nvim",
@@ -186,25 +216,31 @@ require("lazy").setup({
 
 	{
 		-- Theme
-		"sainnhe/everforest",
+		"folke/tokyonight.nvim",
 		priority = 1000,
 		config = function()
-			vim.cmd.colorscheme("everforest")
+			vim.cmd.colorscheme("tokyonight-storm")
 		end,
 	},
 
 	{
 		-- Set lualine as statusline
 		"nvim-lualine/lualine.nvim",
-		-- See `:help lualine.txt`
 		opts = {
 			options = {
-				icons_enabled = false,
-				theme = "everforest",
+				icons_enabled = true,
+				theme = "ayu_dark",
 				component_separators = "|",
 				section_separators = "",
 			},
 		},
+		config = function()
+			require("lualine").setup({
+				sections = {
+					lualine_c = { { "filename", path = 1 } },
+				},
+			})
+		end,
 	},
 
 	{
@@ -240,6 +276,12 @@ require("lazy").setup({
 		},
 	},
 
+	-- Fuzzy Finder File Browser
+	{
+		"nvim-telescope/telescope-file-browser.nvim",
+		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+	},
+
 	-- Highlight, edit, and navigate code
 	{
 		-- Highlight, edit, and navigate code
@@ -248,6 +290,28 @@ require("lazy").setup({
 			"nvim-treesitter/nvim-treesitter-textobjects",
 		},
 		build = ":TSUpdate",
+	},
+
+	-- Zen mode for margin
+	{
+		"folke/zen-mode.nvim",
+		opts = {
+			window = {
+				backdrop = 0.95,
+				width = 0.95,
+				height = 0.95,
+			},
+
+			plugins = {
+				alacritty = {
+					enabled = true,
+				},
+				options = {
+					ruler = true,
+					laststatus = 3,
+				},
+			},
+		},
 	},
 
 	-- File tree
@@ -269,6 +333,9 @@ require("lazy").setup({
 
 	-- Undo tree
 	{ "mbbill/undotree" },
+
+	-- mini.nvim and nvim-web-devicons for better icons
+	{ "nvim-tree/nvim-web-devicons", version = false },
 }, {})
 
 -- Setting options
@@ -346,6 +413,7 @@ vim.keymap.set("n", "<leader>Tv", ":TestVisit<CR>", { desc = "[T]est [V]isit" })
 vim.keymap.set("n", "<leader>tt", ":NvimTreeToggle<CR>", { desc = "[T]oggle [T]ree" })
 vim.keymap.set("n", "<leader>tv", ":VimuxTogglePane<CR>", { desc = "[T]oggle [V]imux" })
 vim.keymap.set("n", "<leader>tu", ":UndotreeToggle<CR>", { desc = "[T]oggle [U]ndotree" })
+vim.keymap.set("n", "<leader>tz", ":ZenMode<CR>", { desc = "[T]oggle [Z]enMode" })
 
 -- Extra LSP keymaps
 vim.keymap.set("n", "<leader>lr", ":LspRestart<CR>", { desc = "LSP: [R]estart" })
@@ -367,6 +435,12 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
 require("telescope").setup({
+	extensions = {
+		file_browser = {
+			hijack_netrw = true,
+			display_stat = { date = false, size = false, mode = false },
+		},
+	},
 	defaults = {
 		mappings = {
 			i = {
@@ -374,11 +448,17 @@ require("telescope").setup({
 				["<C-d>"] = false,
 			},
 		},
+		pickers = {
+			find_files = {
+				find_command = { "rg", "--files", "--hidden", "-g", "!.git" },
+			},
+		},
 	},
 })
 
 -- Enable telescope fzf native, if installed
 pcall(require("telescope").load_extension, "fzf")
+pcall(require("telescope").load_extension, "file_browser")
 
 -- Telescope live_grep in git root
 -- Function to find the git root directory based on the current buffer's path
@@ -435,14 +515,20 @@ local function telescope_live_grep_open_files()
 end
 vim.keymap.set("n", "<leader>s/", telescope_live_grep_open_files, { desc = "[S]earch [/] in Open Files" })
 vim.keymap.set("n", "<leader>ss", require("telescope.builtin").builtin, { desc = "[S]earch [S]elect Telescope" })
-vim.keymap.set("n", "<leader>gf", require("telescope.builtin").git_files, { desc = "Search [G]it [F]iles" })
+vim.keymap.set("n", "<leader>sGf", require("telescope.builtin").git_files, { desc = "Search [G]it [F]iles" })
 vim.keymap.set("n", "<leader>sf", require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" })
 vim.keymap.set("n", "<leader>sh", require("telescope.builtin").help_tags, { desc = "[S]earch [H]elp" })
 vim.keymap.set("n", "<leader>sw", require("telescope.builtin").grep_string, { desc = "[S]earch current [W]ord" })
 vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep, { desc = "[S]earch by [G]rep" })
-vim.keymap.set("n", "<leader>sG", ":LiveGrepGitRoot<cr>", { desc = "[S]earch by [G]rep on Git Root" })
+vim.keymap.set("n", "<leader>sGR", ":LiveGrepGitRoot<cr>", { desc = "[S]earch by [G]rep on Git [R]oot" })
 vim.keymap.set("n", "<leader>sd", require("telescope.builtin").diagnostics, { desc = "[S]earch [D]iagnostics" })
 vim.keymap.set("n", "<leader>sr", require("telescope.builtin").resume, { desc = "[S]earch [R]esume" })
+vim.keymap.set(
+	"n",
+	"<leader>st",
+	":Telescope file_browser path=%:p:h select_buffer=true<CR>",
+	{ desc = "[S]earch [T]ree" }
+)
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -572,27 +658,6 @@ local on_attach = function(_, bufnr)
 	end, { desc = "Format current buffer with LSP" })
 end
 
--- document existing key chains
-require("which-key").register({
-	["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
-	["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
-	["<leader>g"] = { name = "[G]it", _ = "which_key_ignore" },
-	["<leader>h"] = { name = "Git [H]unk", _ = "which_key_ignore" },
-	["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
-	["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
-	["<leader>t"] = { name = "[T]oggle", _ = "which_key_ignore" },
-	["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
-	["<leader>l"] = { name = "[L]SP", _ = "which_key_ignore" },
-	["<leader>tt"] = { name = "[T]oggle [T]ree", _ = "which_key_ignore" },
-	["<leader>T"] = { name = "[T]est", _ = "which_key_ignore" },
-})
--- register which-key VISUAL mode
--- required for visual <leader>hs (hunk stage) to work
-require("which-key").register({
-	["<leader>"] = { name = "VISUAL <leader>" },
-	["<leader>h"] = { "Git [H]unk" },
-}, { mode = "v" })
-
 -- mason-lspconfig requires that these setup functions are called in this order
 -- before setting up the servers.
 require("mason").setup()
@@ -624,7 +689,7 @@ local servers = {
 		Lua = {
 			workspace = { checkThirdParty = false },
 			telemetry = { enable = false },
-			diagnostics = { disable = { "missing-fields" } },
+			diagnostics = { disable = { "missing-fields" }, globals = { "vim", "require" } },
 		},
 	},
 }

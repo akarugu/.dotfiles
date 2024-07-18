@@ -42,7 +42,7 @@ git --reset hard
 
 #start borders for fancy look - works with aerospace
 brew services start borders
-borders active_color=0xff13ed37 inactive_color=0xff494d64 width=8.0 &
+borders active_color=0xff13ed37 inactive_color=0xff494d64 width=10.0 &
 
 #clone zsh syntax highlighting
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting

@@ -5,6 +5,7 @@ apps=(
 	git
 	stow
 	ripgrep
+	fd
 	grep
 	tree
 	zsh
@@ -16,16 +17,18 @@ apps=(
 	python
 	node
 	go
+	luarocks
 	ngrok/ngrok/ngrok
 	borders
 	kubernetes-cli
 	kubectx
 	k3d
+	k9s
 )
 
 casks=(
+	alacritty
 	nikitabobko/tap/aerospace #wm
-	iterm2
 	notion
 	slack
 	postman
@@ -33,9 +36,10 @@ casks=(
 	discord
 	figma
 	docker
-	runelite
 	calibre
 	ticktick
+	runelite
+	jagex
 )
 
 fonts=(
