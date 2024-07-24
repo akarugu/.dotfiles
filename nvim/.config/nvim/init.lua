@@ -32,12 +32,54 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Configure plugins
 require("lazy").setup({
-	-- Startup screen, lightweight and beautiful
 	{
-		"eoh-bse/minintro.nvim",
-		opts = { color = "#698DDA" },
-		config = true,
-		lazy = false,
+		"goolord/alpha-nvim",
+		config = function()
+			local alpha = require("alpha")
+			local dashboard = require("alpha.themes.dashboard")
+			-- 99 Smithing before in game
+			dashboard.section.header.val = {
+				[[                                             _                              ]],
+				[[                                            (_)                             ]],
+				[[                       _ __   ___  _____   ___ _ __ ___                     ]],
+				[[                      | '_ \ / _ \/ _ \ \ / / | '_ ` _ \                    ]],
+				[[                      | | | |  __/ (_) \ V /| | | | | | |                   ]],
+				[[                      |_| |_|\___|\___/ \_/ |_|_| |_| |_|                   ]],
+				[[                                                                            ]],
+				[[                                                                            ]],
+				[[                                                                            ]],
+				[[                                                                            ]],
+				[[                                              ▒▒▒▒▒█                        ]],
+				[[                                ▒▒▒▒▒        ▒▒▒░▒▒█                        ]],
+				[[                               ▒░░▒▒▒        ▒▒▒▒▒▒█                        ]],
+				[[                               ▒░▒▒▒▓        ▒▒▒▒▒▓▓                        ]],
+				[[                               ▒░▒▒▒▒▒▒▒▒▒    ▒▒▒▒▒▓                        ]],
+				[[                              ▒▒░▒▒▒░▒▒▒▒▓    ▒▒▒▒▒▓█                       ]],
+				[[                       ▒▒▒▒▒▒ ▒▒░▒▒▒░▒▒▒▒▓    ▒▒▒▒▒▓▓                       ]],
+				[[                       ░▒▒▒▒▓ ▒░░▒▒▒█▒▒▒▒▓▓   ▒▒▒▒▒▒▓                       ]],
+				[[                       ░▒▒▒▒▓▓▒░░▒▒▒█░▒▒▒▒▓█  ▒▒▒▒▒▒▓                       ]],
+				[[                        ░▒▒▒▒▓█▒░▒▒▒█ ▒▒▒▒▓█  ▒▒▒▒▒▒▓                       ]],
+				[[                         ▒▒▒▒▒▓▒░▒▒▒▓ ▒▒▒▒▓█  ▒▒▒▒▒▒▓                       ]],
+				[[                         ░▒▒▒▓▒▒▒▒▒▒▓░▒▒▒▒▓   ▒▒▒▒▒▓▓                       ]],
+				[[                        ░▒▒▒▒▓▒░▒▒▒▓▒░▒▒▒▓█   ▒▒▒▒▒▓▓                       ]],
+				[[                         ▒▒▒  ░░▒▒▒▓  ▒▒▓ ▒▒▒▒ ▒▒▒▒▓▓                       ]],
+				[[                               ▒▒▒▓      ░░▒▒▒                              ]],
+				[[                                                                            ]],
+				[[  ___      __   __   ___     __   ___  ___     _    __   ___     ___  ____  ]],
+				[[ (__ \    /  ) /. | (__ )   /. | ( _ )(__ )   / )  /. | (__ )   / __)(  _ \ ]],
+				[[  / _/ ()  )( (_  _) / / ()(_  _)/ _ \ (_ \()/ _ \(_  _) / /   ( (_-. )___/ ]],
+				[[ (____)/  (__)  (_) (_/  /   (_) \___/(___// \___/  (_) (_/     \___/(__)   ]],
+			}
+
+			dashboard.section.buttons.val = {
+				dashboard.button("e", "  > New file", ":ene <BAR> startinsert <CR>"),
+				dashboard.button("f", "  > Find file", ":Telescope find_files<CR>"),
+				dashboard.button("r", "  > Recent", ":Telescope oldfiles<CR>"),
+				dashboard.button("q", "󰅚  Quit", ":qa<CR>"),
+			}
+
+			alpha.setup(dashboard.config)
+		end,
 	},
 
 	-- Git related plugins
@@ -226,16 +268,15 @@ require("lazy").setup({
 	{
 		-- Set lualine as statusline
 		"nvim-lualine/lualine.nvim",
-		opts = {
-			options = {
-				icons_enabled = true,
-				theme = "ayu_dark",
-				component_separators = "|",
-				section_separators = "",
-			},
-		},
+		opts = {},
 		config = function()
 			require("lualine").setup({
+				options = {
+					icons_enabled = true,
+					theme = "ayu_mirage",
+					component_separators = "|",
+					section_separators = "|",
+				},
 				sections = {
 					lualine_c = { { "filename", path = 1 } },
 				},
