@@ -165,7 +165,6 @@ require("lazy").setup({
 			-- Document existing key chains
 			require("which-key").add({
 				{ "<leader>c", group = "[C]ode", icon = "" },
-				{ "<leader>d", group = "[D]ocument" },
 				{ "<leader>r", group = "[R]ename" },
 				{ "<leader>s", group = "[S]earch" },
 				{ "<leader>w", group = "[W]orkspace" },
@@ -462,6 +461,8 @@ vim.keymap.set("n", "<leader>lr", ":LspRestart<CR>", { desc = "LSP: [R]estart" }
 -- Make vimux global strategy
 vim.api.nvim_set_var("test#strategy", "vimux")
 
+vim.api.nvim_set_var("test#go#gotest#options", "-timeout 60m -tags validation -v")
+
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
@@ -555,7 +556,7 @@ local function telescope_live_grep_open_files()
 	})
 end
 vim.keymap.set("n", "<leader>s/", telescope_live_grep_open_files, { desc = "[S]earch [/] in Open Files" })
-vim.keymap.set("n", "<leader>ss", require("telescope.builtin").builtin, { desc = "[S]earch [S]elect Telescope" })
+vim.keymap.set("n", "<leader>sS", require("telescope.builtin").builtin, { desc = "[S]earch [S]elect Telescope" })
 vim.keymap.set("n", "<leader>sGf", require("telescope.builtin").git_files, { desc = "Search [G]it [F]iles" })
 vim.keymap.set("n", "<leader>sf", require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" })
 vim.keymap.set("n", "<leader>sh", require("telescope.builtin").help_tags, { desc = "[S]earch [H]elp" })
@@ -678,7 +679,7 @@ local on_attach = function(_, bufnr)
 	nmap("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 	nmap("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
 	nmap("<leader>ld", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
-	nmap("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
+	nmap("<leader>ss", require("telescope.builtin").lsp_document_symbols, "[S]earch [S]ymbols")
 	nmap("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
 
 	-- See `:help K` for why this keymap
@@ -783,7 +784,6 @@ mason_tools.setup({
 		"goimports-reviser",
 		"gofumpt",
 		"gomodifytags",
-		"golines",
 
 		"yamlfmt",
 		"yamllint",
@@ -796,7 +796,7 @@ mason_tools.setup({
 require("conform").setup({
 	formatters_by_ft = {
 		lua = { "stylua" },
-		go = { "goimports-reviser", "gofumpt", "gomodifytags", "golines" },
+		go = { "goimports-reviser", "gofumpt", "gomodifytags" },
 	},
 	format_on_save = {
 		-- These options will be passed to conform.format()
