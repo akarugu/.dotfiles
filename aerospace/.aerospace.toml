@@ -68,10 +68,25 @@ k = 'resize height -50'
 l = 'resize width +50'
 alt-esc = 'mode main'
 
+[gaps]
+inner.horizontal = [{ monitor.main = 8 }, { monitor.secondary = 16 }, 10]
+inner.vertical = [{ monitor.main = 8 }, { monitor.secondary = 16 }, 10]
+outer.left = [{ monitor.main = 8 }, { monitor.secondary = 12 }, 10]
+outer.bottom = [{ monitor.main = 8 }, { monitor.secondary = 4 }, 10]
+outer.top = [{ monitor.main = 8 }, { monitor.secondary = 4 }, 10]
+outer.right = [{ monitor.main = 8 }, { monitor.secondary = 12 }, 10]
+
 [workspace-to-monitor-force-assignment]
 1 = ['main', 'secondary']
 2 = ['main', 'secondary']
 3 = ['main', 'secondary']
 4 = ['main', 'secondary']
-5 = ['secondary', 'main']
-6 = ['secondary', 'main']
+8 = ['secondary', 'main']
+9 = ['secondary', 'main']
+
+
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# For better performance: 
+#You can disable the setting by running: defaults write com.apple.spaces spans-displays -bool true && killall SystemUIServer
+#in System Settings: System Settings → Desktop & Dock → Displays have separate Spaces). Logout is required for the setting to take effect.
