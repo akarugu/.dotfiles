@@ -591,6 +591,7 @@ vim.defer_fn(function()
 			"vimdoc",
 			"vim",
 			"bash",
+			"hcl",
 		},
 
 		-- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
@@ -778,6 +779,8 @@ local mason_tools = require("mason-tool-installer")
 
 mason_tools.setup({
 	ensure_installed = {
+		"terraform-ls",
+
 		"golangci-lint",
 		"staticcheck",
 

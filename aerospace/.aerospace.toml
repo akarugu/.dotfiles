@@ -84,9 +84,32 @@ outer.right = [{ monitor.main = 8 }, { monitor.secondary = 12 }, 10]
 8 = ['secondary', 'main']
 9 = ['secondary', 'main']
 
+on-focus-changed = ['move-mouse monitor-force-center'] # Mouse lazily follows any focus (window or workspace)
 
-on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+[[on-window-detected]]
+    if.app-id = 'com.apple.Safari'
+    run = 'move-node-to-workspace 1' 
 
-# For better performance: 
+[[on-window-detected]]
+    if.app-id = 'com.google.Chrome'
+    run = 'move-node-to-workspace 1' 
+
+[[on-window-detected]]
+    if.app-id = 'org.alacritty'
+    run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+    if.app-id = 'com.tinyspeck.slackmacgap'
+    run = 'move-node-to-workspace 8'
+
+[[on-window-detected]]
+    if.app-id = 'com.spotify.client'
+    run = 'move-node-to-workspace 9'
+
+[[on-window-detected]]
+    if.app-id = 'com.todoist.mac.Todoist'
+    run = 'move-node-to-workspace 9'
+
+# For better performance:  (https://nikitabobko.github.io/AeroSpace/guide#a-note-on-displays-have-separate-spaces)
 #You can disable the setting by running: defaults write com.apple.spaces spans-displays -bool true && killall SystemUIServer
 #in System Settings: System Settings → Desktop & Dock → Displays have separate Spaces). Logout is required for the setting to take effect.

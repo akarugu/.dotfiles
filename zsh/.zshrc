@@ -103,9 +103,15 @@ export export KUBE_EDITOR=nvim
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+alias k="kubectl"
+alias ka="kubectl get all -o wide"
+alias kap="kubectl apply -f "
+
+alias t="terraform"
 
 #start borders for fancy look - works with aerospace
 #brew services start borders
 #borders active_color=0xff13ed37 inactive_color=0xff494d64 width=8.0 &
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /opt/homebrew/bin/terraform terraform

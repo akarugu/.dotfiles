@@ -1,5 +1,6 @@
 brew tap FelixKratz/formulae
 brew tap homebrew/cask-fonts
+brew tap hashicorp/tap
 
 apps=(
 	git
@@ -7,39 +8,58 @@ apps=(
 	ripgrep
 	fd
 	grep
+
 	tree
+	btop
+
 	zsh
 	neovim	
 	tmux
+
 	cmake
 	jq
 	yq
 	python
 	node
 	go
+	gotestsum
 	luarocks
-	ngrok/ngrok/ngrok
-	borders
+
 	kubernetes-cli
 	kubectx
 	k3d
+	minikube
 	k9s
+	helm
+	hashicorp/tap/terraform
+
+	borders
+
+	ngrok/ngrok/ngrok
 )
 
 casks=(
 	alacritty
 	nikitabobko/tap/aerospace #wm
-	notion
+
 	slack
 	postman
+	docker
+
 	spotify
 	discord
-	figma
-	docker
-	calibre
-	ticktick
+
 	runelite
 	jagex
+	steam
+	league-of-legends
+
+	figma
+
+	todoist
+
+	malwarebytes
+	surfshark
 )
 
 fonts=(
