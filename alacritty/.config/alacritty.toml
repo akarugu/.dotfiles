@@ -1,11 +1,11 @@
 [window]
 
-decorations = "None"
+decorations = "Buttonless"
 dynamic_padding = true
 padding = { x = 5, y = 5}
 decorations_theme_variant = "Dark"
 opacity = 0.8
-blur = false
+blur = true 
 
 [bell]
 

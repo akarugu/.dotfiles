@@ -32,6 +32,7 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Configure plugins
 require("lazy").setup({
+	-- Greeter
 	{
 		"goolord/alpha-nvim",
 		config = function()
@@ -255,8 +256,8 @@ require("lazy").setup({
 		},
 	},
 
+	-- Theme
 	{
-		-- Theme
 		"folke/tokyonight.nvim",
 		priority = 1000,
 		config = function()
@@ -264,8 +265,19 @@ require("lazy").setup({
 		end,
 	},
 
+	-- Shader for inactive windows
 	{
-		-- Set lualine as statusline
+		"sunjon/shade.nvim",
+		config = function()
+			require("shade").setup({
+				overlay_opacity = 50,
+				opacity_step = 1,
+			})
+		end,
+	},
+
+	-- Set lualine as statusline
+	{
 		"nvim-lualine/lualine.nvim",
 		opts = {},
 		config = function()

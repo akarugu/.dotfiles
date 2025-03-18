@@ -1,4 +1,3 @@
-brew tap FelixKratz/formulae
 brew tap homebrew/cask-fonts
 brew tap hashicorp/tap
 
@@ -33,14 +32,15 @@ apps=(
 	helm
 	hashicorp/tap/terraform
 
-	borders
-
 	ngrok/ngrok/ngrok
 )
 
 casks=(
 	alacritty
 	nikitabobko/tap/aerospace #wm
+
+	betterdisplay
+	hazeover
 
 	slack
 	postman
